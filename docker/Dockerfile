@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM harbor.lamodatech.ru/dockerhub/python:3.9-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
