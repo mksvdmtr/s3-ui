@@ -48,11 +48,6 @@ services:
 
 ingressClass: nginx-internal
 ingress:
-  - name: http
-    hosts:
-      - url: s3-ui-{{ .Environment.Name }}.k-prod-general01.lamodatech.ru
-        customServiceName: s3-ui-{{ .Environment.Name }}-http
-        svcPort: http
   - name: https
     tlsEnabled: true
     tlsSecret: k-prod-infra01-lamoda-tech-ru-wild-le
