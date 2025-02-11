@@ -53,10 +53,13 @@ ingress:
       - url: s3-ui-{{ .Environment.Name }}.k-prod-general01.lamodatech.ru
         customServiceName: s3-ui-{{ .Environment.Name }}-http
         svcPort: http
-    tls:
-      - hosts:
-        - s3-ui-{{ .Environment.Name }}.k-prod-general01.lamodatech.ru
-        secretName: k-prod-infra01-lamoda-tech-ru-wild-le
+  - name: https
+    tlsEnabled: true
+    tlsSecret: k-prod-infra01-lamoda-tech-ru-wild-le
+    hosts:
+      - url: s3-ui-{{ .Environment.Name }}.k-prod-general01.lamodatech.ru
+        customServiceName: s3-ui-{{ .Environment.Name }}-http
+        svcPort: http
 
 configMaps:
   env:
