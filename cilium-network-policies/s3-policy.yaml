@@ -4,7 +4,7 @@ metadata:
   name: egress-allow-s3
   namespace: app-s3-ui
   labels:
-    issue: "SEGM"
+    issue: "SEGM-13601"
 spec:
   endpointSelector:
     matchExpressions:
