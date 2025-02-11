@@ -12,7 +12,7 @@ try:
     bucket_name = os.environ['YC_BUCKET_NAME']
     access_key_id = os.environ['YC_ACCESS_KEY']
     secret_access_key = os.environ['YC_SECRET_ACCESS_KEY']
-    key_prefix = os.environ['KEY_PREFIX']
+    url_expires = os.environ['URL_EXPIRES']
 except KeyError as e:
     logger.error("env not set: {}", e)
     sys.exit(1)
@@ -28,7 +28,8 @@ s3_client = boto3.client(
 @app.route('/')
 def list_objects():
     try:
-        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=key_prefix)
+        prefix = request.args.get('prefix', '')
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
         objects = response.get('Contents', [])
         filtered_objects = [obj for obj in objects if obj['Size'] > 0]
 
@@ -66,7 +67,7 @@ def download_object():
     try:
         url = s3_client.generate_presigned_url('get_object',
                                                 Params={'Bucket': bucket_name, 'Key': key},
-                                                ExpiresIn=3600)
+                                                ExpiresIn=url_expires)
         return redirect(url)
     except Exception as e:
         return f"Error generating temporary URL: {str(e)}", 500
