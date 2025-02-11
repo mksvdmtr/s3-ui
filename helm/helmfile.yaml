@@ -2,9 +2,6 @@ environments:
   obfuscator:
     values:
       - IMAGE_TAG: {{ env "IMAGE_TAG" | quote }}
-  adv:
-    values:
-      - IMAGE_TAG: {{ env "IMAGE_TAG" | quote }}
 
 helmDefaults:
   wait: true
