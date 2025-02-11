@@ -13,6 +13,18 @@ deployment:
         - name: http
           containerPort: 5000
           protocol: TCP
+      livenessProbe:
+        httpGet:
+          path: /
+          port: http
+        periodSeconds: 5
+        timeoutSeconds: 5
+      readinessProbe:
+        httpGet:
+          path: /
+          port: http
+        periodSeconds: 5
+        timeoutSeconds: 5
       resources:
         limits:
           cpu: 500m
