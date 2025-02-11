@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k-prod-general01-lamoda-tech-ru-wild-le
+  namespace: app-s3-ui
+  annotations:
+    replicator.v1.mittwald.de/replicate-from: infra-nginx-ingress/k-prod-general01-lamoda-tech-ru-wild-le
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+type: kubernetes.io/tls
+data:
+  tls.key: ""
+  tls.crt: ""
