@@ -1,0 +1,21 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: egress-allow-s3
+  namespace: app-s3-ui
+  labels:
+    issue: "SEGM"
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - s3-ui
+  egress:
+    - toCIDRSet:
+        - cidr: 213.180.193.243/32
+      toPorts:
+        - ports:
+          - port: '443'
+            protocol: TCP

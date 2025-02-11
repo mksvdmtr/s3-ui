@@ -1,0 +1,49 @@
+appName: "s3-ui"
+project: "s3-ui"
+
+deployment:
+  replicaCount: 1
+  containers:
+    app:
+      image:
+        repository: harbor.lamodatech.ru/infra/tools/s3-ui
+        tag: {{ .Values.IMAGE_TAG }}
+        pullPolicy: IfNotPresent
+      ports:
+        - name: http
+          containerPort: 5000
+          protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 64Mi
+      envFrom:
+        - configMapRef:
+            name: env
+        - secretRef:
+            name: s3-ui-{{ .Environment.Name }}
+
+services:
+  - name: http
+    type: ClusterIP
+    ports:
+      - port: 80
+        targetPort: http
+        name: http
+
+ingressAnnotations:
+ingress:
+  - name: http
+    hosts:
+      - url: s3-ui-{{ .Environment.Name }}.k-prod-general01.lamodatech.ru
+        customServiceName: s3-ui-{{ .Environment.Name }}-http
+        svcPort: http
+
+configMaps:
+  env:
+    data:
+      URL_EXPIRES: "7200"
+      YC_BUCKET_NAME: "yc-s3-prod-obfuscator01"

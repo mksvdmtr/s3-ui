@@ -1,6 +1,10 @@
 ---
 stages:
   - build
+  - deploy
+
+image:
+  name: "${HARBOR_HOST}/infra/cd-tools/cd-tools:1.1.0-helmfile-new"
 
 include:
     - project: 'infra/pipelines/ci-templates'
@@ -8,6 +12,13 @@ include:
       file:
         - '/src/oci/kaniko.yaml'
         - '/src/oci/helm.yaml'
+
+.yc-k8s-prod-general01:
+  variables:
+    KUBE_CONTEXT: "yc-k8s-prod-general01"
+    VAULT_ENV_KUBE_CONFIG_BASE64: "k8s/deploy-config/yc-k8s-prod-general01/kubeconfig@infra-jobs"
+    HELM_DIFF_USE_UPGRADE_DRY_RUN: false
+    CI_RUNNER_TAG: k8s-prod
 
 .base:
   timeout: 15m
@@ -27,3 +38,14 @@ include:
 
 build:app:
   extends: [".base_build"]
+
+deploy:obfuscator:
+  stage: deploy
+  extends: [".helm_k8s_basic", ".yc-k8s-prod-general01"]
+  when: manual
+  script:
+    - echo "=== HELMFILE ==="
+    - IMAGE_TAG=${CI_COMMIT_TAG} helmfile -f helm/helmfile.yaml --kube-context "${KUBE_CONTEXT}" -e obfuscator apply
+
+
+

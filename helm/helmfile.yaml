@@ -1,0 +1,21 @@
+environments:
+  obfuscator:
+    values:
+      - IMAGE_TAG: {{ env "IMAGE_TAG" | quote }}
+  adv:
+    values:
+      - IMAGE_TAG: {{ env "IMAGE_TAG" | quote }}
+
+helmDefaults:
+  wait: true
+  timeout: 300
+
+releases:
+- name: s3-ui-{{ .Environment.Name }}
+  chart: oci://harbor.lamodatech.ru/helm/unified
+  version: 3.0.7
+  namespace: "app-s3-ui"
+  createNamespace: true
+  values:
+    - values/app.yaml.gotmpl
+  
