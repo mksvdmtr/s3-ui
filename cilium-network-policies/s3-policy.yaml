@@ -2,7 +2,7 @@ apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
   name: egress-allow-s3
-  namespace: app-s3-ui
+  namespace: app-s3-ui-obfuscator
   labels:
     issue: "SEGM-13601"
 spec:

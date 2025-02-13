@@ -35,8 +35,6 @@ deployment:
       envFrom:
         - configMapRef:
             name: env
-        - secretRef:
-            name: s3-ui-{{ .Environment.Name }}
 
 services:
   - name: http
@@ -61,3 +59,7 @@ configMaps:
     data:
       URL_EXPIRES: "7200"
       YC_BUCKET_NAME: "yc-s3-prod-obfuscator01"
+
+secretsWebhook:
+  enabled: true
+  namespace: "app-s3-ui-{{ .Environment.Name }}"

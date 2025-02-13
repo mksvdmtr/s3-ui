@@ -10,8 +10,8 @@ helmDefaults:
 releases:
 - name: s3-ui-{{ .Environment.Name }}
   chart: oci://harbor.lamodatech.ru/helm/unified
-  version: 3.0.7
-  namespace: "app-s3-ui"
+  version: 3.2.0
+  namespace: "app-s3-ui-{{ .Environment.Name }}"
   createNamespace: true
   values:
     - values/app.yaml.gotmpl
