@@ -4,7 +4,7 @@ metadata:
   name: egress-allow-ldap
   namespace: app-s3-ui-obfuscator
   labels:
-    issue: "SEGM"
+    issue: "SEGM-13630"
 spec:
   endpointSelector:
     matchExpressions:
