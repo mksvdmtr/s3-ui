@@ -7,7 +7,7 @@ deployment:
     app:
       image:
         repository: harbor.lamodatech.ru/infra/tools/s3-ui
-        tag: {{ .Values.IMAGE_TAG | default "v0.0.9" }}
+        tag: {{ .Values.IMAGE_TAG | default "v2.0.0" }}
         pullPolicy: IfNotPresent
       ports:
         - name: http
@@ -59,6 +59,10 @@ configMaps:
     data:
       URL_EXPIRES: "7200"
       YC_BUCKET_NAME: "yc-s3-prod-obfuscator01"
+      KEY_PREFIXES: "mysql,pgsql"
+      LDAP_SERVER: ldap://office.lamoda.ru
+      LDAP_BASE_DN: "DC=office,DC=lamoda,DC=ru"
+
 
 secretsWebhook:
   enabled: true

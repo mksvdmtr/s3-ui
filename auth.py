@@ -5,7 +5,6 @@ from loguru import logger
 try:
     LDAP_SERVER = os.environ['LDAP_SERVER']
     LDAP_BASE_DN = os.environ['LDAP_BASE_DN']
-    LDAP_GROUP_NAME = os.environ['LDAP_GROUP_NAME']
     LDAP_SERVICE_ACCOUNT_NAME = os.environ['LDAP_SERVICE_ACCOUNT_NAME']
     LDAP_SERVICE_ACCOUNT_PASSWORD = os.environ['LDAP_SERVICE_ACCOUNT_PASSWORD']
 except KeyError as e:
