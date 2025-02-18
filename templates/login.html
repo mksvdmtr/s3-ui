@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+    <form method="post" class="login-form">
+        <h2 class="login-title">Login (LDAP)</h2>
+        <div class="form-group">
+            <label for="username" class="form-label">User:</label>
+            <input type="text" id="username" name="username" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" id="password" name="password" class="form-input" required>
+        </div>
+        <button type="submit" class="login-button">Войти</button>
+        <p class="login-error">{{ message }}</p>
+    </form>
+</body>
+</html>
