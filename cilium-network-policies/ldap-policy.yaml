@@ -1,0 +1,27 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: egress-allow-ldap
+  namespace: app-s3-ui-obfuscator
+  labels:
+    issue: "SEGM"
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - s3-ui
+  egress:
+    - toCIDRSet:
+        - cidr: 10.5.20.20/32
+        - cidr: 10.5.20.30/32
+        - cidr: 10.5.20.40/32
+        - cidr: 10.6.20.30/32
+        - cidr: 10.144.249.30/32
+        - cidr: 10.144.249.40/32
+        - cidr: 10.198.8.35/32
+      toPorts:
+        - ports:
+          - port: '389'
+            protocol: TCP
