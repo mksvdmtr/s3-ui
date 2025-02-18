@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket Contents</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='objects.css') }}">
+</head>
+<body>
+    <a href="/logout" class="logout">Logout</a>
+    <h2>{{ bucket_name }}</h2>
+    <ul>
+        {% for obj in filtered_objects %}
+            <li>
+                <a href="/download?key={{ obj['Key'] }}">{{ obj['Key'] }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,18 +1,20 @@
-from flask import Flask, render_template_string, redirect, request
+from flask import Flask, render_template, redirect, request, session, url_for
 import boto3
 from botocore.exceptions import NoCredentialsError
 from botocore.config import Config
 import os, sys
 from loguru import logger
-
+from auth import ldap_authenticate
 
 app = Flask(__name__)
 
 try:
+    app.secret_key = os.environ['APP_SECRET_KEY']
     bucket_name = os.environ['YC_BUCKET_NAME']
     access_key_id = os.environ['YC_ACCESS_KEY']
     secret_access_key = os.environ['YC_SECRET_ACCESS_KEY']
     url_expires = os.environ['URL_EXPIRES']
+    key_prefixes = os.environ['KEY_PREFIXES']
 except KeyError as e:
     logger.error("env not set: {}", e)
     sys.exit(1)
@@ -27,36 +29,44 @@ s3_client = boto3.client(
 
 @app.route('/')
 def list_objects():
-    try:
-        prefix = request.args.get('prefix', '')
-        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-        objects = response.get('Contents', [])
-        filtered_objects = [obj for obj in objects if obj['Size'] > 0]
+    all_objects = []
+    if 'projects' in session:
+        try:
+            for project in session['projects']:
+                for key_prefix in key_prefixes.split(','):
+                    response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=f'{key_prefix}/{project}')
+                    objects = response.get('Contents', [])
+                    all_objects.extend(objects)
 
-        html_content = '''
-        <!doctype html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title></title>
-        </head>
-        <body>
-            <h2>{{ bucket_name }}</h2>
-            <ul>
-                {% for obj in filtered_objects %}
-                    <li>
-                        <a href="/download?key={{ obj['Key'] }}">{{ obj['Key'] }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </body>
-        </html>
-        '''
+            filtered_objects = [obj for obj in all_objects if obj['Size'] > 0]
+            return render_template('objects.html', filtered_objects=filtered_objects, bucket_name=bucket_name)
+        except NoCredentialsError:
+            return 'You are not logged in. <a href="/login">Login</a>'
+    return 'You are not logged in. <a href="/login">Login</a>'
 
-        return render_template_string(html_content, filtered_objects=filtered_objects, bucket_name=bucket_name)
-    except NoCredentialsError:
-        return "Error: Invalid credentials", 403
+@app.route('/login', methods=['GET', 'POST'])
+
+def login():
+    message=''
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        projects = ldap_authenticate(username, password)
+    
+        if projects:
+            session['projects'] = projects
+            message='Success'
+            return redirect(url_for('list_objects'))
+        else:
+            message='Invalid credentials'
+
+    return render_template('login.html', message=message)
+
+@app.route('/logout')
+def logout():
+    session.pop('projects', None)
+    return redirect(url_for('login'))
 
 @app.route('/download')
 def download_object():
