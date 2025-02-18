@@ -7,7 +7,7 @@ deployment:
     app:
       image:
         repository: harbor.lamodatech.ru/infra/tools/s3-ui
-        tag: {{ .Values.IMAGE_TAG | default "v2.0.0" }}
+        tag: {{ .Values.IMAGE_TAG | default "v2.0.2" }}
         pullPolicy: IfNotPresent
       ports:
         - name: http
