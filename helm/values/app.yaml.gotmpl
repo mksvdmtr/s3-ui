@@ -7,10 +7,8 @@ deployment:
     app:
       image:
         repository: harbor.lamodatech.ru/infra/tools/s3-ui
-        tag: {{ .Values.IMAGE_TAG | default "v2.0.2" }}
+        tag: {{ .Values.IMAGE_TAG | default "v2.0.4" }}
         pullPolicy: IfNotPresent
-      command: ["/bin/bash"]
-      args: ["-c", "while true; do sleep 1; echo 1; done"]
       ports:
         - name: http
           containerPort: 5000
