@@ -1,0 +1,21 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: egress-allow-sso
+  namespace: app-s3-ui-obfuscator
+  labels:
+    issue: "SEGM-13770"
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - s3-ui
+  egress:
+    - toCIDRSet:
+        - cidr: 178.248.234.51/32
+      toPorts:
+        - ports:
+          - port: '443'
+            protocol: TCP
