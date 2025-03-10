@@ -60,10 +60,14 @@ configMaps:
       URL_EXPIRES: "7200"
       YC_BUCKET_NAME: "yc-s3-prod-obfuscator01"
       KEY_PREFIXES: "mysql,pgsql"
-      LDAP_SERVER: "ldap://10.144.249.30"
-      LDAP_BASE_DN: "DC=office,DC=lamoda,DC=ru"
-
-
+      REDIS_CLUSTER_NAME: "yc-redis-prod-s3-ui01"
+      REDIS_SENTINEL_HOST: "c-c9qgr4rur211rk3cbub7.rw.mdb.yandexcloud.net"
+      REDIS_SENTINEL_PORT: "26379"
+      OIDC_SCOPE: "openid profile email group"
+      OIDC_TOKEN_URI: "https://sso.lamoda.ru/adfs/oauth2/token"
+      OIDC_AUTH_URI: "https://sso.lamoda.ru/adfs/oauth2/authorize"
+      OIDC_END_SESSION_ENDPOINT: "https:/sso.lamoda.ru/adfs/oauth2/logout"
+      OIDC_ISSUER: "https://sso.lamoda.ru/adfs"
 
 secretsWebhook:
   enabled: true

@@ -1,10 +1,10 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: egress-allow-ldap
+  name: egress-allow-redis
   namespace: app-s3-ui-obfuscator
   labels:
-    issue: "SEGM-13630"
+    issue: "SEGM-13770"
 spec:
   endpointSelector:
     matchExpressions:
@@ -14,14 +14,12 @@ spec:
           - s3-ui
   egress:
     - toCIDRSet:
-        - cidr: 10.5.20.20/32
-        - cidr: 10.5.20.30/32
-        - cidr: 10.5.20.40/32
-        - cidr: 10.6.20.30/32
-        - cidr: 10.144.249.30/32
-        - cidr: 10.144.249.40/32
-        - cidr: 10.198.8.35/32
+        - cidr: 10.204.69.41/32
+        - cidr: 10.204.70.30/32
+        - cidr: 10.204.71.33/32
       toPorts:
         - ports:
-          - port: '389'
+          - port: '26379'
+            protocol: TCP
+          - port: '6379'
             protocol: TCP
