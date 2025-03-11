@@ -21,6 +21,7 @@ try:
     OIDC_CLIENT_SECRET = os.environ['OIDC_CLIENT_SECRET']
     OIDC_AUTH_URI = os.environ['OIDC_AUTH_URI']
     OIDC_TOKEN_URI = os.environ['OIDC_TOKEN_URI']
+    OIDC_REDIRECT_URIS = os.environ['OIDC_REDIRECT_URIS']
     OIDC_END_SESSION_ENDPOINT = os.environ['OIDC_END_SESSION_ENDPOINT']
     OIDC_ISSUER = os.environ['OIDC_ISSUER']
     OIDC_SCOPE = os.environ['OIDC_SCOPE']
@@ -28,12 +29,16 @@ except KeyError as e:
     logger.error("env not set: {}", e)
     sys.exit(1)
 
+oidc_redirect_uris = OIDC_REDIRECT_URIS.split(',') if OIDC_REDIRECT_URIS else []
+oidc_redirect_uris = [x.strip() for x in oidc_redirect_uris]
+
 oidc_client_secrets_json = {
     "web": {
         "client_id": OIDC_CLIENT_ID,
         "client_secret": OIDC_CLIENT_SECRET,
         "auth_uri": OIDC_AUTH_URI,
         "token_uri": OIDC_TOKEN_URI,
+        "redirect_uris": oidc_redirect_uris,
         "issuer": OIDC_ISSUER,
         "end_session_endpoint": OIDC_END_SESSION_ENDPOINT,
         "scope": OIDC_SCOPE
