@@ -74,6 +74,8 @@ def list_objects():
             suffix = f'_ro'
             projects = [item.removeprefix(prefix).removesuffix(suffix) for item in groups]
             all_objects = []
+            print(groups)
+            print(projects)
             if projects:
                 for project in projects:
                     for key_prefix in KEY_PREFIXES.split(','):
