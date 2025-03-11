@@ -68,7 +68,7 @@ s3_client = boto3.client(
 def list_objects():
     projects = []
     if oidc.user_loggedin:
-        if session['oidc_auth_token']['userinfo']:
+        try:
             gr = session['oidc_auth_token']['userinfo']['group']
             if isinstance(gr, str):
                 groups = [gr]
@@ -86,7 +86,7 @@ def list_objects():
                         all_objects.extend(objects)
                 filtered_objects = [obj for obj in all_objects if obj['Size'] > 0]
                 return render_template('objects.html', filtered_objects=filtered_objects, bucket_name=YC_BUCKET_NAME)
-        else:
+        except:
             return render_template('login.html')
     else:
         return render_template('login.html')
