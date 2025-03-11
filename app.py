@@ -69,7 +69,11 @@ def list_objects():
     projects = []
     if oidc.user_loggedin:
         if session['oidc_auth_token']['userinfo']['group']:
-            groups=session['oidc_auth_token']['userinfo']['group']
+            gr = session['oidc_auth_token']['userinfo']['group']
+            if isinstance(gr, str):
+                groups = [gr]
+            else:
+                groups = gr
             prefix = 'g_s3_ui_'
             suffix = f'_ro'
             projects = [item.removeprefix(prefix).removesuffix(suffix) for item in groups]
