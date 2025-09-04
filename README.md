@@ -9,10 +9,10 @@
 - KEY_PREFIXES - необходимо для ограничения вывода списка объектов, передается через запятую, напр. "mysql,express"
 - OIDC_CLIENT_ID - client id с которым приложение будет ходить в adfs
 - OIDC_CLIENT_SECRET - client secret  с которым приложение будет ходить в adfs
-- OIDC_AUTH_URI - (напр. https://sso.lamoda.ru/adfs/oauth2/authorize см https://sso.lamoda.ru/adfs/.well-known/openid-configuration)
-- OIDC_TOKEN_URI - (напр. https://sso.lamoda.ru/adfs/oauth2/token см https://sso.lamoda.ru/adfs/.well-known/openid-configuration)
-- OIDC_END_SESSION_ENDPOINT - (напр. https:/sso.lamoda.ru/adfs/oauth2/logout см https://sso.lamoda.ru/adfs/.well-known/openid-configuration)
-- OIDC_ISSUER - IDP напр. https:/sso.lamoda.ru/adfs
+- OIDC_AUTH_URI
+- OIDC_TOKEN_URI
+- OIDC_END_SESSION_ENDPOINT
+- OIDC_ISSUER - IDP
 - OIDC_SCOPE - напр "openid profile email group"
 
 Префикс поиска объектов в s3 привязан к значению KEY_PREFIXES и группам: g_s3_ui_<название сервиса>_ro.
